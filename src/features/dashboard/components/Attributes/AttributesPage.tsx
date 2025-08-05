@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { AttributesTable } from './AttributesTable';
+import { AttributesTable } from './AttributesTable/AttributesTable';
 import { ActionButton, Container, FlexRow, Title } from './styles/styles';
-import { AttributesForm } from './AttributesForm';
+import { AttributesForm } from './AttributesForm/AttributesForm';
 
 export const AttributePage = () => {
   const [showForm, setShowForm] = useState(false);

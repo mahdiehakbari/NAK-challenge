@@ -7,10 +7,11 @@ import {
   ActionButton,
   AttributeColumn,
   AddButton,
-} from './styles/styles';
+} from '../styles/styles';
+import { useSaveAttribute } from './hooks/useSaveAttribute';
+import { API_URL } from '../constants';
 
 export const AttributesForm = () => {
-  const apiUrl = 'https://nak-interview.darkube.app/attributes';
   const [attribute, setAttribute] = useState<{
     name: string;
     values: string[];
@@ -18,7 +19,9 @@ export const AttributesForm = () => {
     name: '',
     values: [''],
   });
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { saveAttribute } = useSaveAttribute(API_URL);
   const handleNameChange = (value: string) => {
     setAttribute((prev) => ({ ...prev, name: value }));
   };
@@ -34,30 +37,25 @@ export const AttributesForm = () => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
+    setError(null);
     try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(attribute),
-      });
-
-      if (response.ok) {
-        console.log('Attribute created successfully!');
-      } else {
-        const errorData = await response.json();
-        console.error('Failed to create attribute:', errorData);
-      }
-    } catch (error) {
-      console.error('Error while creating attribute:', error);
+      await saveAttribute(attribute);
+      // reset form if needed
+      setAttribute({ name: '', values: [''] });
+    } catch (err) {
+      if (err instanceof Error) setError(err.message);
+      else setError('Unknown error');
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleCancel = () => {
     setAttribute({ name: '', values: [''] });
   };
+  if (loading) return <div>Loading attributes...</div>;
+  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
   return (
     <Container>
       <Title>Attributes</Title>
@@ -71,26 +69,35 @@ export const AttributesForm = () => {
 
         <AttributeColumn>
           {attribute.values.map((val, index) => (
-            <>
+            <div
+              key={index}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '8px',
+              }}
+            >
               <Input
-                key={index}
                 placeholder='Value'
                 value={val}
                 onChange={(e) => handleValueChange(index, e.target.value)}
               />
               {index === attribute.values.length - 1 && (
-                <AddButton onClick={addValue}>＋</AddButton>
+                <AddButton onClick={addValue} type='button'>
+                  ＋
+                </AddButton>
               )}
-            </>
+            </div>
           ))}
         </AttributeColumn>
       </AttributeRow>
 
       <div style={{ display: 'flex', gap: '12px', marginTop: '32px' }}>
-        <ActionButton variant='secondary' onClick={handleCancel}>
+        <ActionButton variant='secondary' onClick={handleCancel} type='button'>
           Cancel
         </ActionButton>
-        <ActionButton variant='primary' onClick={handleSave}>
+        <ActionButton variant='primary' onClick={handleSave} type='button'>
           Save
         </ActionButton>
       </div>

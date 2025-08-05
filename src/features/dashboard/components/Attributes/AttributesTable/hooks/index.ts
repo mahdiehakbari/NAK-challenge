@@ -1,0 +1,1 @@
+export { useFetchAttributes } from './useFetchAttributes';

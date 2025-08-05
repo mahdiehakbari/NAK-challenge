@@ -1,42 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Table, TableHeader, TableRow, TableCell } from './styles/styles';
-import Cookies from 'js-cookie';
+import { Table, TableHeader, TableRow, TableCell } from '../styles/styles';
 import type { IAttribute } from './types';
-
-const apiUrl = 'https://nak-interview.darkube.app/attributes';
+import { useFetchAttributes } from './hooks';
+import { API_URL } from '../constants';
 
 export const AttributesTable = () => {
   const [attributes, setAttributes] = useState<IAttribute[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { fetchAttributes } = useFetchAttributes(API_URL);
 
   useEffect(() => {
-    const fetchAttributes = async () => {
+    const loadAttributes = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        const token = Cookies.get('accessToken');
-
-        if (!token) {
-          throw new Error('Authentication token not found');
-        }
-
-        const response = await fetch(apiUrl, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error fetching attributes: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-
+        const data = await fetchAttributes();
         setAttributes(data);
       } catch (err: unknown) {
         if (err instanceof Error) {
@@ -49,11 +29,11 @@ export const AttributesTable = () => {
       }
     };
 
-    fetchAttributes();
-  }, []);
+    loadAttributes();
+  }, [fetchAttributes]);
 
   if (loading) return <div>Loading attributes...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
 
   return (
     <Table>
