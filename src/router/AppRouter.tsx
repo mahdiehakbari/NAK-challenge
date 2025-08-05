@@ -35,9 +35,6 @@ const AppRouter = () => {
           </ProtectedRoute>
         }
       />
-
-      {/* صفحه 404 */}
-      {/* <Route path="*" element={<NotFoundPage />} /> */}
     </Routes>
   );
 };

@@ -11,7 +11,11 @@ import {
 
 import type { ISidebarProps } from './types';
 
-export const SidebarMenu = ({ userName, openModal }: ISidebarProps) => {
+export const SidebarMenu = ({
+  userName,
+  openModal,
+  onSelect,
+}: ISidebarProps) => {
   const { t } = useTranslation();
 
   return (
@@ -23,12 +27,11 @@ export const SidebarMenu = ({ userName, openModal }: ISidebarProps) => {
         </Profile>
 
         <MenuList>
-          <MenuItem>
+          <MenuItem onClick={() => onSelect('attributes')}>
             <span>⚙️</span> {t('attributes')}
           </MenuItem>
-          <MenuItem last>
-            <span>📦</span>
-            {t('products')}
+          <MenuItem onClick={() => onSelect('products')}>
+            <span>📦</span> {t('products')}
           </MenuItem>
         </MenuList>
       </div>
