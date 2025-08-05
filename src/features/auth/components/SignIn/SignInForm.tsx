@@ -63,7 +63,7 @@ export const SignInForm = () => {
         <Input
           type='text'
           placeholder={t('user_name')}
-          {...register('userName', { required: t('user_name_required') })}
+          {...register('userName', { required: t('input_required') })}
           hasError={!!errors.userName || !!serverError}
         />
         {(errors.userName || serverError) && (
@@ -75,7 +75,7 @@ export const SignInForm = () => {
         <Input
           type='password'
           placeholder={t('password')}
-          {...register('password', { required: t('password_required') })}
+          {...register('password', { required: t('input_required') })}
           hasError={!!errors.password || !!serverError}
         />
         {(errors.password || serverError) && (

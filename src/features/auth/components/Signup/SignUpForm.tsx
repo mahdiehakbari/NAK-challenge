@@ -56,7 +56,7 @@ export const SignUpForm = () => {
         <Input
           type='text'
           placeholder={t('first_name')}
-          {...register('firstName', { required: t('first_name_required') })}
+          {...register('firstName', { required: t('input_required') })}
           hasError={!!errors.firstName || !!serverError}
         />
         {errors.firstName && (
@@ -68,7 +68,7 @@ export const SignUpForm = () => {
         <Input
           type='text'
           placeholder={t('last_name')}
-          {...register('lastName', { required: t('last_name_required') })}
+          {...register('lastName', { required: t('input_required') })}
           hasError={!!errors.lastName || !!serverError}
         />
         {errors.lastName && (
@@ -81,7 +81,7 @@ export const SignUpForm = () => {
           type='text'
           placeholder={t('user_name')}
           {...register('userName', {
-            required: t('user_name_required'),
+            required: t('input_required'),
             minLength: {
               value: 3,
               message: t('user_name_min_length'),
@@ -99,7 +99,7 @@ export const SignUpForm = () => {
           type='password'
           placeholder={t('password')}
           {...register('password', {
-            required: t('password_required'),
+            required: t('input_required'),
             minLength: {
               value: 6,
               message: t('password_min_length'),

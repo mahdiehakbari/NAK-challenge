@@ -2,5 +2,16 @@
   "sign_in": "Sign In",
   "user_name": "Username",
   "password": "Password",
-  "sign_up": "Sign Up"
+  "sign_up": "Sign Up",
+  "input_required": "All fields are required.",
+  "first_name": "First Name",
+  "last_name": "last Name",
+  "attributes": "Attributes",
+  "products": "Products",
+  "logout": "Logout",
+  "happy": "I'm very happy you are here,",
+  "hope": "I hope you find this dashboard easy and useful to use",
+  "logout_modal_text": "Are you sure you want to exit?",
+  "no": "No",
+  "yes": "Yes"
 }

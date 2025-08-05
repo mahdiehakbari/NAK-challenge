@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Logout,
@@ -7,9 +8,12 @@ import {
   Sidebar,
   UserName,
 } from '../style/styles';
-import type { IDashboardProps } from '../types';
 
-export const SidebarMenu = ({ userName }: IDashboardProps) => {
+import type { ISidebarProps } from './types';
+
+export const SidebarMenu = ({ userName, openModal }: ISidebarProps) => {
+  const { t } = useTranslation();
+
   return (
     <Sidebar>
       <div>
@@ -20,16 +24,17 @@ export const SidebarMenu = ({ userName }: IDashboardProps) => {
 
         <MenuList>
           <MenuItem>
-            <span>⚙️</span> Attributes
+            <span>⚙️</span> {t('attributes')}
           </MenuItem>
           <MenuItem last>
-            <span>📦</span> Products
+            <span>📦</span>
+            {t('products')}
           </MenuItem>
         </MenuList>
       </div>
 
-      <Logout>
-        <span>↩️</span> Logout
+      <Logout onClick={openModal}>
+        <span>↩️</span> {t('logout')}
       </Logout>
     </Sidebar>
   );
