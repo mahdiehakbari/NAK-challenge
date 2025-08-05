@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
 import {
   FormWrapper,
   Input,
@@ -7,18 +10,45 @@ import {
   FlexRow,
   LoginButton,
   SingUpButton,
-} from './styles';
+  ErrorMessage,
+  InputWrapper,
+} from './style/styles';
 import { FaArrowRight } from 'react-icons/fa';
-import type { TFormValues } from './types';
-import { useNavigate } from 'react-router-dom';
+import { useLogin } from './hooks';
+import { useAuthStore } from '../../store/useAuthStore';
+
+type TFormValues = {
+  userName: string;
+  password: string;
+};
 
 export const SignInForm = () => {
-  const { register, handleSubmit } = useForm<TFormValues>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TFormValues>();
   const { t } = useTranslation();
+  const setAuthData = useAuthStore((state) => state.setAuthData);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const apiUrl = 'https://nak-interview.darkube.app/auth/login';
+  const [loading, setLoading] = useState(false);
+
+  const { login } = useLogin(apiUrl);
   const navigate = useNavigate();
 
-  const onSubmit = (data: TFormValues) => {
-    console.log(data);
+  const onSubmit = async (data: TFormValues) => {
+    setServerError(null);
+    setLoading(true);
+
+    const token = await login(data, setServerError);
+
+    setLoading(false);
+
+    if (!token) return;
+
+    setAuthData(token, data.userName);
+    navigate('/dashboard');
   };
 
   const handleSignUpClick = () => {
@@ -26,25 +56,39 @@ export const SignInForm = () => {
   };
 
   return (
-    <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+    <FormWrapper onSubmit={handleSubmit(onSubmit)} noValidate>
       <Title>{t('sign_in')}</Title>
-      <Input
-        type='text'
-        placeholder={t('user_name')}
-        {...register('userName')}
-      />
-      <Input
-        type='password'
-        placeholder={t('password')}
-        extraMargin
-        {...register('password')}
-      />
+
+      <InputWrapper>
+        <Input
+          type='text'
+          placeholder={t('user_name')}
+          {...register('userName', { required: t('user_name_required') })}
+          hasError={!!errors.userName || !!serverError}
+        />
+        {(errors.userName || serverError) && (
+          <ErrorMessage>{errors.userName?.message || serverError}</ErrorMessage>
+        )}
+      </InputWrapper>
+
+      <InputWrapper extraMargin>
+        <Input
+          type='password'
+          placeholder={t('password')}
+          {...register('password', { required: t('password_required') })}
+          hasError={!!errors.password || !!serverError}
+        />
+        {(errors.password || serverError) && (
+          <ErrorMessage>{errors.password?.message || serverError}</ErrorMessage>
+        )}
+      </InputWrapper>
+
       <FlexRow>
         <SingUpButton type='button' onClick={handleSignUpClick}>
           {t('sign_up')}
         </SingUpButton>
         <LoginButton type='submit'>
-          <FaArrowRight />
+          {loading ? 'Loading...' : <FaArrowRight />}
         </LoginButton>
       </FlexRow>
     </FormWrapper>

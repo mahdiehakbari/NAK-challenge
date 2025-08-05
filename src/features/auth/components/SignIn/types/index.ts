@@ -4,5 +4,9 @@ export type TFormValues = {
 };
 
 export interface IInputProps {
+  hasError: boolean;
+}
+
+export interface IInputWrapperProps {
   extraMargin?: boolean;
 }

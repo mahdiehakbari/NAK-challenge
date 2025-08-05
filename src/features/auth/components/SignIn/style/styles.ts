@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import colors from '../../../../styles/colors';
-import type { IInputProps } from './types';
+import colors from '../../../../../styles/colors';
+import type { IInputProps, IInputWrapperProps } from '../types';
 
 export const FormWrapper = styled('form')`
   display: flex;
@@ -19,17 +19,22 @@ export const Title = styled('h1')`
   font-weight: 800;
   color: ${colors.primary};
   margin: 0px 0px 70px 0px;
+  text-align: start;
+`;
+
+export const InputWrapper = styled('div')<IInputWrapperProps>`
+  margin-bottom: ${({ extraMargin }) => (extraMargin ? '70px' : '20px')};
 `;
 
 export const Input = styled('input')<IInputProps>`
   padding: 15px 40px;
   border-radius: 40px;
-  border: 0px;
+  border: 2px solid ${({ hasError }) => (hasError ? 'red' : 'transparent')};
   font-weight: 600;
   font-size: 20px;
   line-hight: 40px;
   background: ${colors.backgroundGray};
-  margin-bottom: ${({ extraMargin }) => (extraMargin ? '70px' : '20px')};
+  width: -webkit-fill-available;
   &::placeholder {
     color: ${colors.textColorGray};
     font-weight: 600;
@@ -71,4 +76,12 @@ export const SingUpButton = styled('button')`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+`;
+export const ErrorMessage = styled.p`
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  text-align: left;
+  margin-left: 8px;
 `;

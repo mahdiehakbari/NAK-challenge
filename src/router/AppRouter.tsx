@@ -1,27 +1,45 @@
-import { Routes, Route } from 'react-router-dom';
-import { ROUTES } from './routes';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import PublicRoute from '../features/auth/components/PublicRoute/PublicRoute';
 import SignInPage from '../features/auth/components/SignIn/SignInPage';
-import SignUpPage from '../features/auth/components/Signup';
+import ProtectedRoute from '../features/auth/components/ProtectedRoute/ProtectedRoute';
+import DashboardPage from '../features/dashboard/components/DashboardPage/DashboardPage';
+import SignUpPage from '../features/auth/components/Signup/SignUpPage';
 
-// const isAuthenticated = false;
-
-export const AppRouter = () => {
+const AppRouter = () => {
   return (
     <Routes>
-      <Route path={ROUTES.LOGIN} element={<SignInPage />} />
-      <Route path={ROUTES.SIGNUP} element={<SignUpPage />} />
+      <Route path='/' element={<Navigate to='/login' replace />} />
 
-      {/* {isAuthenticated ? (
-        <>
-          <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
-          <Route path={ROUTES.PRODUCT} element={<ProductPage />} />
-          <Route path={ROUTES.ATTRIBUTE} element={<AttributePage />} />
-        </>
-      ) : (
-        <Route path="*" element={<Navigate to={ROUTES.LOGIN} />} />
-      )}
+      <Route
+        path='/login'
+        element={
+          <PublicRoute>
+            <SignInPage />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path='/signup'
+        element={
+          <PublicRoute>
+            <SignUpPage />
+          </PublicRoute>
+        }
+      />
 
-      <Route path="*" element={<NotFoundPage />} /> */}
+      <Route
+        path='/dashboard'
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* صفحه 404 */}
+      {/* <Route path="*" element={<NotFoundPage />} /> */}
     </Routes>
   );
 };
+
+export default AppRouter;

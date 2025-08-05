@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { SignInForm } from './features/auth/components/SignIn/SignInForm';
-import SignUpPage from './features/auth/components/Signup';
+import SignUpPage from './features/auth/components/Signup/SignUpPage';
 
 function App() {
   return (
