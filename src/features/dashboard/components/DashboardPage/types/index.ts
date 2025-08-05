@@ -1,3 +1,3 @@
-export interface ISidebarMenuProps {
+export interface IDashboardProps {
   userName: string | null;
 }
