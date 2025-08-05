@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import colors from '../../../../../styles/colors';
 
 export const Container = styled.div`
   padding: 40px;
@@ -16,12 +17,20 @@ export const AttributeRow = styled.div`
   gap: 12px;
   margin-bottom: 16px;
 `;
+export const AttributeColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+`;
 
 export const Input = styled.input`
   flex: 1;
   padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 40px;
+  width: 400px;
+  height: 20px;
+  margin-bottom: 16px;
 `;
 
 export const FlexRow = styled('div')`
@@ -37,11 +46,28 @@ export const ActionButton = styled.button<{
   border-radius: 40px;
   border: none;
   cursor: pointer;
-  background: ${({ variant }) => (variant === 'primary' ? 'black' : '#eee')};
-  color: ${({ variant }) => (variant === 'primary' ? 'white' : 'black')};
+  background: ${colors.primary};
+  color: white;
   &:hover {
     opacity: 0.9;
   }
+`;
+
+export const AddButton = styled.button<{
+  variant?: 'primary' | 'secondary';
+}>`
+  width: 70px;
+  height: 70px;
+  padding: 12px 20px;
+  border-radius: 40px;
+  border: 1px solid ${colors.primary};
+  cursor: pointer;
+  background: #eee;
+  color: ${colors.primary};
+  &:hover {
+    opacity: 0.9;
+  }
+  margin-top: 10px;
 `;
 
 export const Table = styled.table`
