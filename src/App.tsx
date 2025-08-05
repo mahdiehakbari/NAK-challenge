@@ -1,14 +1,15 @@
-import './App.css';
-import { SignInForm } from './features/auth/components/SignInForm';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { SignInForm } from './features/auth/components/SignIn/SignInForm';
+import SignUpPage from './features/auth/components/Signup/SignUpPage';
 
 function App() {
   return (
-    <>
-      <div>
-        <h1>ورود به سامانه</h1>
-        <SignInForm />
-      </div>
-    </>
+    <Routes>
+      <Route path='/' element={<Navigate to='/login' replace />} />
+
+      <Route path='/login' element={<SignInForm />} />
+      <Route path='/signup' element={<SignUpPage />} />
+    </Routes>
   );
 }
 
